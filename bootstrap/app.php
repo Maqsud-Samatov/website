@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+         $middleware->validateCsrfTokens(except: [
+            'payment/click/*',
+            'payment/payme',
+        ]);
         $middleware->alias([
             'admin'    => \App\Http\Middleware\AdminMiddleware::class,
             'owner'    => \App\Http\Middleware\OwnerMiddleware::class,

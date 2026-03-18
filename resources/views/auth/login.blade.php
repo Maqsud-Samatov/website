@@ -1,47 +1,99 @@
-<x-guest-layout>
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kirish — FoodRush</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body class="auth-body">
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+<div class="auth-wrapper">
+    <!-- LEFT -->
+    <div class="auth-left">
+        <a href="{{ url('/') }}" class="auth-logo">
+            <div class="logo-icon">🔥</div>
+            <div class="logo-text">FoodRush</div>
+        </a>
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="auth-left-content">
+            <h2 class="auth-left-title">Xush kelibsiz<br><span>FoodRush</span> ga!</h2>
+            <p class="auth-left-desc">Sevimli ovqatingizni 30 daqiqada eshigingizga yetkazib beramiz.</p>
+
+            <div class="auth-features">
+                <div class="auth-feature">
+                    <div class="feat-icon">⚡</div>
+                    30 daqiqada yetkazib berish
+                </div>
+                <div class="auth-feature">
+                    <div class="feat-icon">🍽️</div>
+                    50+ restoran, 500+ taom
+                </div>
+                <div class="auth-feature">
+                    <div class="feat-icon">💳</div>
+                    Click, Payme, naqd to'lov
+                </div>
+                <div class="auth-feature">
+                    <div class="feat-icon">📍</div>
+                    Real vaqt kuzatuvi
+                </div>
+            </div>
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+        <div class="auth-left-footer">© {{ date('Y') }} FoodRush</div>
+    </div>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+    <!-- RIGHT -->
+    <div class="auth-right">
+        <h1 class="auth-title">Kirish</h1>
+        <p class="auth-subtitle">Hisobingiz yo'qmi? <a href="{{ route('register') }}">Ro'yxatdan o'ting</a></p>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        @if ($errors->any())
+            <div class="alert-error">❌ Email yoki parol noto'g'ri</div>
+        @endif
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+            <div class="form-group">
+                <label>Email manzil</label>
+                <div class="input-wrap">
+                    <span class="input-icon">✉️</span>
+                    <input type="email" name="email" value="{{ old('email') }}"
+                        placeholder="email@example.com"
+                        class="{{ $errors->has('email') ? 'error' : '' }}" required autofocus>
+                </div>
+                @error('email') <div class="error-msg">⚠️ {{ $message }}</div> @enderror
+            </div>
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            <div class="form-group">
+                <label>Parol</label>
+                <div class="input-wrap">
+                    <span class="input-icon">🔒</span>
+                    <input type="password" name="password"
+                        placeholder="Parolni kiriting"
+                        class="{{ $errors->has('password') ? 'error' : '' }}" required>
+                </div>
+                @error('password') <div class="error-msg">⚠️ {{ $message }}</div> @enderror
+            </div>
+
+            <div class="form-row">
+                <label class="remember">
+                    <input type="checkbox" name="remember"> Eslab qolish
+                </label>
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}" class="forgot">Parolni unutdingizmi?</a>
+                @endif
+            </div>
+
+            <button type="submit" class="btn-submit">
+                🚀 Kirish
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

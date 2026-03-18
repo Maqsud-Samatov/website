@@ -12,6 +12,29 @@ class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+    public function restaurant() {
+        return $this->hasOne(Restaurant::class);
+    }
+
+    public function orders() {
+        return $this->hasMany(Order::class);
+    }
+
+    public function cart() {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function isAdmin() {
+        return $this->role === 'admin';
+    }
+
+    public function isOwner() {
+        return $this->role === 'owner';
+    }
+
+    public function isDelivery() {
+        return $this->role === 'delivery';
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +45,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
